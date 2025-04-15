@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from glob import glob
 from collections import defaultdict
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
 
 class Utils:
     def __init__(self, primary_path = ""):
@@ -22,6 +23,7 @@ class Utils:
         
         os.makedirs('fall-guard', exist_ok=True)
         os.makedirs('fall-guard/dataset-insights', exist_ok=True)
+        os.makedirs('/fall-guard/kfall-dataset-plots', exist_ok=True)
         os.makedirs('fall-guard/dataset', exist_ok=True)
         os.makedirs('fall-guard/dataset/adl', exist_ok=True)
         os.makedirs('fall-guard/dataset/fall', exist_ok=True)
@@ -96,7 +98,6 @@ class Utils:
 
     def plot_subject_readings(self):
         print("\nStarting Data plot process...")
-        os.makedirs(f"{self.primary_path}/fall-guard/kfall-dataset-plots", exist_ok=True)
         total_subjects = len(self.dataset)
 
         for subject_idx, (subject_no, subject_readings) in enumerate(self.dataset.items(), 1):
