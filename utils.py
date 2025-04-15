@@ -23,7 +23,7 @@ class Utils:
         
         os.makedirs('fall-guard', exist_ok=True)
         os.makedirs('fall-guard/dataset-insights', exist_ok=True)
-        os.makedirs('/fall-guard/kfall-dataset-plots', exist_ok=True)
+        os.makedirs('fall-guard/kfall-dataset-plots', exist_ok=True)
         os.makedirs('fall-guard/dataset', exist_ok=True)
         os.makedirs('fall-guard/dataset/adl', exist_ok=True)
         os.makedirs('fall-guard/dataset/fall', exist_ok=True)
