@@ -7,7 +7,14 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, random_split
 from collections import Counter
-from sklearn.metrics import accuracy_score, precision_score, confusion_matrix
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    confusion_matrix
+)
+import seaborn as sns
 from imblearn.over_sampling import SMOTE
 import random
 

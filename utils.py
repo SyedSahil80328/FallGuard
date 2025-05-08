@@ -9,11 +9,10 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 
 class Utils:
-    def __init__(self, primary_path = ""):
+    def __init__(self):
         self.seed = 42
-        self.primary_path = primary_path
-        self.subjects = sorted(glob(f"{self.primary_path}/kfall-dataset/sensor_data_new/SA*"))
-        self.labels = sorted(glob(f"{self.primary_path}/kfall-dataset/label_data_new/*"))
+        self.subjects = sorted(glob("kfall-dataset/sensor_data_new/SA*"))
+        self.labels = sorted(glob("kfall-dataset/label_data_new/*"))
         self.falls = [i for i in range(20, 35, 1)]
         self.dataset = {}
         self.sequence_threshold = 50
@@ -30,7 +29,7 @@ class Utils:
         os.makedirs('fall-guard/models', exist_ok=True)
 
     def load_task_dict(self):
-        with open(f"{self.primary_path}/task_dict.json", "r") as f:
+        with open("task_dict.json", "r") as f:
             return json.load(f)
 
     def read_dataset(self):
@@ -65,9 +64,9 @@ class Utils:
                 data["Subject"].append(task_name)
                 data["FrameCounts"].append(task["data"]['FrameCounter'].iat[-1])
 
-        pd.DataFrame.from_dict(data).to_csv(f"{self.primary_path}/fall-guard/dataset-insights/subject_trials_frame_counts.csv")
+        pd.DataFrame.from_dict(data).to_csv("fall-guard/dataset-insights/subject_trials_frame_counts.csv")
         print("File to get trial lengths is saved successfully.")
-        print(f"It is found in \"{self.primary_path}/fall-guard/dataset-insights/subject_trials_frame_counts.csv\"")
+        print("It is found in \"fall-guard/dataset-insights/subject_trials_frame_counts.csv\"")
 
     def get_no_of_trials(self):
         data = {}
@@ -78,9 +77,9 @@ class Utils:
                 task_info[f"Task {int(task_name[4:6])}"] += 1
             data[subject_no] = task_info
 
-        pd.DataFrame.from_dict(data, orient="index").fillna(0).to_csv(f"{self.primary_path}/fall-guard/dataset-insights/subject_trials.csv")
+        pd.DataFrame.from_dict(data, orient="index").fillna(0).to_csv("fall-guard/dataset-insights/subject_trials.csv")
         print("File to get no of trials is saved successfully.")
-        print(f"It is found in \"{self.primary_path}/fall-guard/dataset-insights/subject_trials.csv\"")
+        print("It is found in \"fall-guard/dataset-insights/subject_trials.csv\"")
 
     def vector_summation(self):
         print("\nStarting vector summation process...")
@@ -108,17 +107,17 @@ class Utils:
                 if task_id != prev_task_id:
                     prev_task_id = task_id
                     plt.figure(figsize=(12, 8))
-                    plt.plot(data["data"]["FrameCounter"], data["data"]["Acc"], label="Gyroscope (°/s)")
+                    plt.plot(data["data"]["FrameCounter"], data["data"]["Acc"], label="Acceleration (m/s²)")
                     plt.plot(data["data"]["FrameCounter"], data["data"]["Gyr"], label="Gyroscope (°/s)")
-                    plt.plot(data["data"]["FrameCounter"], data["data"]["Euler"], label="Gyroscope (°/s)")
+                    plt.plot(data["data"]["FrameCounter"], data["data"]["Euler"], label="Euler (°/s)")
 
                     plt.xlabel("Frame Counter")
-                    plt.ylabel("Gyroscope Reading")
-                    plt.title(f"Gyroscope Readings Over Time for {self.task_dict[task_id]} by Subject {subject_no}")
+                    plt.ylabel("Sensor Readings")
+                    plt.title(f"Sensor Readings Over Time for {self.task_dict[task_id]} by Subject {subject_no}")
                     plt.legend(loc="upper right")
                     plt.tight_layout()
 
-                    plt.savefig(f"{self.primary_path}/fall-guard/kfall-dataset-plots/{task}.png")
+                    plt.savefig(f"fall-guard/kfall-dataset-plots/{task}.png")
                     plt.close()
 
         print("\nData plot completed successfully.")
